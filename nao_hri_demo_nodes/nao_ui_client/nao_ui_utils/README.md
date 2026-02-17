@@ -1,44 +1,51 @@
-# nao_hri# NAO_HRI — Repository Overview
-This repository groups several ROS 2 packages used to build a Human–Robot
-Interaction (HRI) demo stack around NAO.
-Each package is documented separately; this README provides a **high-level map** and
-**where to look next**.
+# nao_ui_utils
+Small ROS 2 **utility package** used by the NAO_HRI workspace to keep the
+Web UI / HRI “command format” consistent across nodes.
+This package is meant to be built and used on **Ubuntu 22.04**, either:
+- natively, or
+- inside a Distrobox container (same as the rest of the workspace tooling).
+> **Note:** `nao_ui_utils` provides *utilities* (helpers, shared types / small parsing
+> helpers). It typically contains **no standalone nodes** to launch.
+---
 ## Contents
-- [Packages](#packages)
-- [Prerequisites](#prerequisites)
+- [What is in this package](#what-is-in-this-package)
+- [Where it is used](#where-it-is-used)
+- [Dependencies](#dependencies)
 - [Build](#build)
-- [Run](#run)
-- [Directory layout](#directory-layout)
+- [How to use it](#how-to-use-it)
+- [Troubleshooting](#troubleshooting)
 - [License](#license)
 ---
-## Packages
-> Links below point to the package directories 
-
-
-[`nao_bt_controller`](./nao_bt_controller) | Behaviour Tree (BT) runner/controller
-that orchestrates the HRI flow by dispatching high-level commands and waiting for
-results.
-
-[`nao_hri_demo_nodes`](./nao_hri_demo_nodes) | Demo ROS 2 nodes and scripts
-(stubs/bridges/evaluation helpers) to connect the BT to UI, voice, pose/exercise
-evaluation, etc. 
-
-[`nao_led_profiles`](./nao_led_profiles) | YAML-based LED “emotion/state” profiles
-(patterns, colors, timing) packaged for runtime lookup. | Provide consistent visual
-signalling across nodes and hardware configurations. |
-
-[`nao_ui_utils`](./nao_ui_utils) | Shared utilities for UI-related message/state
-handling (small helpers reused by nodes). | Avoid duplication across UI/bridge
-nodes.
-
+## What is in this package
+`nao_ui_utils` is a “glue” package that centralizes small pieces of logic that
+would otherwise be duplicated across:
+- the Behaviour Tree runner and its adapters,
+- the Web UI bridge (service/action),
+- any node that produces/consumes JSON UI commands.
+Typical responsibilities for a utils package in this workspace include:
+- common constants (e.g., UI modes / states),
+- command schema helpers (e.g., validating/normalizing a JSON payload),
+- convenience builders for “UI command” messages.
+Because the exact helper list depends on the repository revision, treat this
+package as **an internal dependency**: other packages import it, but you normally
+don’t run anything from it directly.
 ---
-## Prerequisites
-- ROS 2 (Rolling) installed and sourced.
-- `colcon` and standard ROS 2 build tooling.
-- A working workspace (example name: `nao_ws`) with this repository placed under
-`src/`.
-> Any extra dependencies that are package-specific are documented in each package
-README.
+## Where it is used
+In the NAO_HRI workspace, the utilities from this package are consumed by nodes
+that must agree on a shared UI command schema.
+Common consumers in this repository/workspace:
+- `nao_hri_demo_nodes` (e.g., `ui_stub`, `speak_bridge`, evaluation nodes)
+- `nao_bt_controller` (BT runner that emits `/hri/*_cmd` topics)
+External (separate repository) but commonly used together:
+- Web UI server / ROS 2 bridge providing `/robot/ui/command` (service) and
+`/robot/ui/command_action` (action)
+---
+## Dependencies
+### Runtime
+- ROS 2 (Rolling in the workspace setup).
+- Standard Python/C++ runtime dependencies depending on the implementation
+(typically `rclpy` or `rclcpp`, plus basic stdlib).
+> If `nao_ui_utils` is a pure library package, it will not add extra system> dependencies beyond what the consumers already need.
 ---
 ## Build
 From the workspace root (e.g., `nao_ws`):
@@ -47,15 +54,25 @@ source /opt/ros/rolling/setup.bash
 colcon build
 source install/setup.bash
 ```
----## Run
-There is no single “one command” launcher in this top-level README because execution
-is typically split across multiple terminals (or tmux).
-Start with the package READMEs, in this order:
-1. `nao_led_profiles` (profiles must be discoverable at runtime)
-2. `nao_hri_demo_nodes` (UI/voice/pose/eval demo nodes)
-3. `nao_bt_controller` (BT runner that drives the scenario)
 ---
-
+## How to use it
+You do not “run” `nao_ui_utils`. Instead, build the workspace and make sure
+your consumer package depends on it (ament dependency in `package.xml`,
+and the appropriate CMake / Python packaging hooks).
+Typical usage patterns:
+- **Python**: import helpers from `nao_ui_utils` inside bridge nodes.
+- **C++**: include headers (if provided) from `nao_ui_utils` in nodes that need
+shared UI command logic.
+---
+## Troubleshooting
+- **Import/include not found**
+- Rebuild the workspace (`colcon build`) and re-source the overlay
+(`source install/setup.bash`).
+- Confirm the consumer package declares a dependency on `nao_ui_utils`.
+- **Runtime schema mismatch**
+- If a node rejects a JSON UI command (unknown mode/state or missing fields),
+ensure all producers/consumers are using the same revision of
+`nao_ui_utils` and the same expected schema.
+---
 ## License
-See the repository license file (or the per-package `package.xml` metadata, if
-applicable).
+See the repository-level `LICENSE` file.
