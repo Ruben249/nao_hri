@@ -1,0 +1,6 @@
+rightarmUp:
+  video: right_arm_up.mp4
+  eval_template: rightarmUp.yml
+  nao_pos_cmd: "1"
+  nao_pos_file: rightarmUp.pos
+

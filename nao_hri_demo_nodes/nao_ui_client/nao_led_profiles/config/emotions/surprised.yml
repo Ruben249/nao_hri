@@ -1,0 +1,7 @@
+mode: BLINKING
+frequency: 0.0
+duration: -1
+leds: [CHEST]
+colors:
+  - [0.6, 0.0, 0.6, 1.0] #Purple
+intensities: [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]

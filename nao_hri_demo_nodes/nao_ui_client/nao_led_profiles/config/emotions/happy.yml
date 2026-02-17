@@ -1,0 +1,7 @@
+mode: STEADY
+frequency: 0.0
+duration: -1
+leds: [REYE,LEYE]
+colors:
+  - [0.0, 0.85, 0.25, 0.0] #Green
+intensities: [0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55]

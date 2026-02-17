@@ -1,0 +1,8 @@
+mode: BLINKING
+frequency: 4.0
+duration: -1
+leds: [REYE, LEYE]
+colors:
+  - [0.0, 0.0, 1.0, 1.0] # Blue
+intensities: [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+

@@ -1,0 +1,8 @@
+mode: STEADY
+frequency: 8.0
+duration: -1
+leds: [CHEST]
+colors:
+  - [1.0, 1.0, 0.0, 1.0] #Yellow
+intensities: [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+

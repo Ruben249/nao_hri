@@ -1,0 +1,38 @@
+id: rightarmUp
+consecutive_hits: 1
+min_kpt_conf: 0.35
+
+required_landmarks:
+  - right_shoulder
+  - right_elbow
+  - right_wrist
+
+logic: all   # all | any
+
+checks:
+  - type: angle
+    name: elbow_angle
+    a: right_shoulder
+    b: right_elbow
+    c: right_wrist
+    target_deg: 165
+    tol_deg: 30
+
+  # IMPORTANTE: con tu definición actual:
+  # 0=arriba, 90=horizontal, 180=abajo
+  # Si el brazo está arriba, verás ~7..20 grados.
+  - type: angle_to_vertical
+    name: arm_raise
+    a: right_shoulder
+    b: right_wrist
+    target_deg: 12
+    tol_deg: 18
+
+  # Check genérico adicional (NO especializado) para robustez:
+  # "a" debe estar por encima de "b" por al menos margin_norm (en coords normalizadas 0..1).
+  # wrist debe estar bastante por encima del shoulder.
+  - type: y_above
+    name: wrist_above_shoulder
+    a: right_wrist
+    b: right_shoulder
+    margin_norm: 0.03

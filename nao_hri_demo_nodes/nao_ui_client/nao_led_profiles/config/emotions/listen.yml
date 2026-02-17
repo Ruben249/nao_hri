@@ -1,0 +1,8 @@
+mode: BLINKING
+frequency: 2.0
+duration: -1
+leds: [REAR, LEAR]
+colors:
+  - [0.0, 0.0, 1.0, 1.0]
+intensities: [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+
