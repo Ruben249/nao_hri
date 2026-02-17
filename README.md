@@ -1,4 +1,5 @@
-# nao_hri# NAO_HRI — Repository Overview
+# nao_hri
+# NAO_HRI — Repository Overview
 This repository groups several ROS 2 packages used to build a Human–Robot
 Interaction (HRI) demo stack around NAO.
 Each package is documented separately; this README provides a **high-level map** and
