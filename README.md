@@ -23,13 +23,14 @@ results.
 (stubs/bridges/evaluation helpers) to connect the BT to UI, voice, pose/exercise
 evaluation, etc. 
 
-[`nao_led_profiles`](./nao_led_profiles) | YAML-based LED “emotion/state” profiles
+[`nao_led_profiles`](./nao_ui_client/nao_led_profiles) | YAML-based LED “emotion/state” profiles
 (patterns, colors, timing) packaged for runtime lookup. | Provide consistent visual
 signalling across nodes and hardware configurations. |
 
-[`nao_ui_utils`](./nao_ui_utils) | Shared utilities for UI-related message/state
+[`nao_ui_utils`](./nao_ui_client/nao_ui_utils) | Shared utilities for UI-related message/state
 handling (small helpers reused by nodes). | Avoid duplication across UI/bridge
-nodes.
+components.
+
 
 ---
 ## Prerequisites
